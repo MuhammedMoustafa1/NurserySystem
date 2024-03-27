@@ -5,9 +5,31 @@ const childRoute = require('./Routes/childRoute');
 const classRoute = require('./Routes/classRoute');
 const morgan = require('morgan');
 const cors = require('cors');
+const body_parser = require('body-parser');
+const multer = require('multer');
+const path = require('path');
 require('dotenv').config();
 const loginRoutes = require('./Routes/authentication');
 const authMW = require('./MildWwares/authenticationMW');
+
+const storage = multer.diskStorage({
+     destination:(req , file , cb) => {
+        console.log(path.join(__dirname  , 'images'));
+         cb(null , path.join(__dirname  , 'images'));
+     },
+     filename:(req, file, cb)=> { 
+        cb(null ,new Date().toLocaleDateString().replace(/\//g,"-")+"-"+file.originalname);
+     }
+});
+
+const fileFilter = (req , file , cb) => {
+    if (file.mimetype == "image/jpeg" ||
+    file.mimetype == "image/jpg"  ||
+    file.mimetype == "image/png")
+        cb(null , true);
+    else
+        cb(null , false);    
+}
 // default function for create server
 const port = process.env.PORT || 8080;
 const server = express();
@@ -27,6 +49,10 @@ mongoose
 
         
 /* ******************* Structure *******************/
+server.use("/images" , express.static(path.join(__dirname  , 'images')));
+server.use(multer({storage , fileFilter}).single('image'));
+server.use(body_parser.json());
+server.use(body_parser.urlencoded({extended : true}));
 
 server.use(morgan('dev'));
 
@@ -36,8 +62,8 @@ server.use(cors());
 // });
 /********************end Points Routs****************************/
 server.use(express.json());
-server.use(loginRoutes);
-server.use(authMW);
+// server.use(loginRoutes);
+// server.use(authMW);
 server.use(teacherRoute);
 server.use(childRoute);
 server.use(classRoute);

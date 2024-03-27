@@ -16,7 +16,8 @@ const schema = new mongoose.Schema({
     fullName : {type : String},
     age : {type : Number} ,
     level : {type  :String , enum : ['PreKG', 'KG1', 'KG2']} ,
-    address  : addressSchema
+    address  : addressSchema,
+    image : {type : String}
 
 });
 

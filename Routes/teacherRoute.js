@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
     .route('/teachers')
-    .all(isAdmin)
+    //.all(isAdmin)
     .get(teacherController.getAllTeachers)
     .post(insertValidator , validationResult ,teacherController.insertTeacher)
     .patch(updateValidator , validationResult ,teacherController.updateTeacher)

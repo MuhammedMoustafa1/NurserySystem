@@ -17,7 +17,7 @@ exports.getTeacherById = (request , response , next)=>{
     teacherSchema
     .findById(request.params.id)
     .then((data) => {
-        if (!data)
+        if (!data )
             throw new Error ("Teacher doesn not exist");
         response.status(200).json(data);
     })
@@ -25,13 +25,24 @@ exports.getTeacherById = (request , response , next)=>{
 };
 
 exports.insertTeacher = (request , response , next)=>{
-     console.log(request.body);
+
+    //response.json({body: request.body , file:request.file});
+     //console.log(request.body);
     // response.status(200).json({data : "Added Sussefully"});
-    let object = new teacherSchema(request.body);
+    let object = new teacherSchema({
+        _id : request.body._id,
+        fullName : request.body.fullName,
+        email: request.body.email,
+        password : request.body.password,
+        image : request.file.filename,
+        role : request.body.role
+
+    });
     object
     .save()
     .then((data) => {
-        response.status(200).json({data});
+        console.log("Added sussefully")
+        response.status(200).json({data}); 
     })
     .catch((error) => next(error));
 };
@@ -45,7 +56,7 @@ exports.updateTeacher = (request , response , next)=>{
             response.status(304).json({data : "Teacher not found"})
         response.status(200).json("records updated sussefully");
     })
-    .catch((error) => next(error)); 
+    .catch((error) => next(error));
 };
 
 exports.getAllSupervesions = (request , response , next)=>{
