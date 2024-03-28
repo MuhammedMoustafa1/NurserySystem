@@ -7,7 +7,7 @@ const router = express.Router();
 
 router
     .route('/teachers')
-    //.all(isAdmin)
+    // .all(isAdmin)
     .get(teacherController.getAllTeachers)
     .post(insertValidator , validationResult ,teacherController.insertTeacher)
     .patch(updateValidator , validationResult ,teacherController.updateTeacher)
@@ -16,6 +16,7 @@ router
 router.get('/teachers/supervision' , teacherController.getAllSupervesions);
 router.delete('/teachers/:id', validateId, validationResult, teacherController.deleteTeacher);    
 router.route('/teachers/:id').get(validateId, validationResult, teacherController.getTeacherById);
+router.patch('/teachers/changePassword/:id' , teacherController.changeTeacherPassword)
 
 
 

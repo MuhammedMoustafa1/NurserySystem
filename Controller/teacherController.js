@@ -1,5 +1,7 @@
 const teacherSchema = require('../Model/teacherModel');
 const classSchema = require('../Model/classModel');
+const bcrypt = require('bcrypt');
+const { request } = require('express');
 
 exports.getAllTeachers = (request , response , next)=>{
     //response.status(200).json({ data: [] });
@@ -50,7 +52,12 @@ exports.insertTeacher = (request , response , next)=>{
 exports.updateTeacher = (request , response , next)=>{
     // response.status(200).json({data : "Updated Sussefully"});
     teacherSchema
-    .findByIdAndUpdate(request.body._id , request.body , {new : true})
+    .findByIdAndUpdate(request.body._id , {
+        fullName: request.body.fullName,
+        email: request.body.email,
+        image : request.body.image,
+        role: request.body.role
+    }, {new : true})
     .then( (data) => {
         if (!data)
             response.status(304).json({data : "Teacher not found"})
@@ -58,6 +65,37 @@ exports.updateTeacher = (request , response , next)=>{
     })
     .catch((error) => next(error));
 };
+
+
+exports.changeTeacherPassword = async (request, response, next) => {
+    const document = await teacherSchema
+    .findByIdAndUpdate(request.params.id , {
+        password:await bcrypt.hash(request.body.password , 10) 
+        
+    }, {new : true})
+    .then( (data) => {
+        if (!data)
+            response.status(304).json({data : "Teacher not found"})
+        response.status(200).json("Password updated sussefully");
+    })
+    .catch((error) => next(error));
+};
+
+
+// exports.changeUserPassword = (req, res, next) => {
+//   const id = req.body.id;
+//   const hash = bcrypt.hashSync(req.body.password, 10);
+//   teacher.updateOne({ _id: id }, { password: hash })
+//     .then((data) => {
+//       if (data.matchedCount === 0) {
+//         let error = new Error("this teacher id doesn't exist");
+//         error.statusCode = 404;
+//         throw error;
+//       }
+//       res.status(200).json({ message: "password updated successfully" });
+//     })
+//     .catch((error) => next(error));
+// }
 
 exports.getAllSupervesions = (request , response , next)=>{
     // response.status(200).json({ data: [] }); 
