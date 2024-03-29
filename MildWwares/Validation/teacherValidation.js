@@ -1,4 +1,6 @@
 const {body , param , query} = require('express-validator');
+const teacherSchema = require('../../Model/teacherModel');
+const bcrypt = require('bcrypt');
 
 exports.insertValidator = [
     body("_id")
@@ -54,4 +56,36 @@ exports.validateId = [
     param("id")
     .isMongoId()
     .withMessage("ID must be an MongoId"),
+];
+exports.changeTeacherPassword = [
+    body("currentPassword")
+    .notEmpty()
+    .withMessage("Current password is required"),
+    body("passwordConfirm")
+    .notEmpty()
+    .withMessage("Confirm password is required"),
+    body("password")
+    .notEmpty()
+    .withMessage("New password is required")
+    .custom(async (val , {req}) => {
+        const teacher = await teacherSchema.findById(req.params.id);
+        if(!teacher){
+            throw new Error("Teacher doesn't found for this ID");
+        }
+
+        const isCorrectedPassword = await bcrypt.compare(
+            req.body.currentPassword,
+            teacher.password
+        );
+        if (!isCorrectedPassword) {
+            throw new Error("Current password is not correct");
+        }
+        if(val !== req.body.passwordConfirm){
+            throw new Error("Password confirmation does not match password");
+        }
+        return true;
+
+
+    })
+    
 ]
