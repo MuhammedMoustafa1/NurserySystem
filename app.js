@@ -62,8 +62,8 @@ server.use(cors());
 // });
 /********************end Points Routs****************************/
 server.use(express.json());
-// server.use(loginRoutes);
-// server.use(authMW);
+ server.use(loginRoutes);
+ server.use(authMW);
 server.use(teacherRoute);
 server.use(childRoute);
 server.use(classRoute);
