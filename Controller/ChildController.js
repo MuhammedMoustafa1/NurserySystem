@@ -25,7 +25,18 @@ exports.getChildById = (request , response , next)=>{
 exports.insertChild = (request , response , next)=>{
     // console.log(request.body);
     // response.status(200).json({data : "Added Sussefully"});
-    let object = new childSchema(request.body);
+    let object = new childSchema({
+        _id : request.body._id,
+        fullName : request.body.fullName,
+        age : request.body.age,
+        address : {
+            city : request.body.address.city,
+            street : request.body.address.street,
+            building : request.body.address.building
+        },
+        
+        image : request.file.filename
+    });
     object
     .save()
     .then((data) => {

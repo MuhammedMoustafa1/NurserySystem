@@ -7,9 +7,9 @@ exports.insertValidator = [
     body("fullName")
     .isAlpha()
     .withMessage("fullName must be an String"),
-    body("age")
-    .isInt({min : 5 , max : 10})
-    .withMessage("age must be an Integer"),
+    // body("age")
+    // .isInt({min : 5 , max : 10})
+    // .withMessage("age must be an Integer"),
     
     body("level")
     .isIn(['PreKG', 'KG1', 'KG2'])

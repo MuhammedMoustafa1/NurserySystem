@@ -1,6 +1,7 @@
 const { response } = require('express');
 const teacherSchema = require('../Model/teacherModel');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 exports.register = async(request , response , next) => {
     const teacher = await new teacherSchema({
@@ -31,24 +32,24 @@ response.status(200).json({ message: "teacher created", token: token });
 }
 
 
-exports.login = (request , response , next ) => {
-    teacherSchema.findOne({
-        fullName: request.body.fullName,
-        password: request.body.password
-    })
-    .then(object => {
-        if (!object)
-            throw new Error ("Teacher doen not exist");
+exports.login = async (request, response, next) => {
+    try {
+        const object = await teacherSchema.findOne({ email: request.body.email });
 
-        let token = jwt.sign({
-            _id : object._id,
+        if (!object || !(await bcrypt.compare(request.body.password, object.password))) {
+            throw new Error("Incorrect email or password");
+        }
+
+        const token = jwt.sign({
+            _id: object._id,
             role: object.role
         },
-        process.env.SECRETKEY,
-        {expiresIn : "1h"}
-        ) 
-        //console.log(request);
-        response.json({data: "Authenticated", token});   
-    })
-    .catch(error => next(error));
+            process.env.SECRETKEY,
+            { expiresIn: "1h" }
+        );
+
+        response.json({ data: "Authenticated", token });
+    } catch (error) {
+        next(error);
+    }
 }

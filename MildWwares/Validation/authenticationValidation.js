@@ -28,3 +28,11 @@ exports.registerValidator = [
     
 
 ];
+
+exports.loginValidator = [
+    body("email")
+    .isEmail()
+    .notEmpty()
+    .withMessage("email must be an Email"),
+
+]
