@@ -11,6 +11,28 @@ const path = require('path');
 require('dotenv').config();
 const loginRoutes = require('./Routes/authentication');
 const authMW = require('./MildWwares/authenticationMW');
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const options = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Nursery System API',
+            version: '1.0.0',
+        },
+        servers: [
+            {
+                url: "http://localhost:8080/"
+            }
+        ]
+    },
+    apis:['./Routes/*.js']
+}
+
+const swaggerSpec = swaggerJSDoc(options);
+
+
 
 const storage = multer.diskStorage({
      destination:(req , file , cb) => {
@@ -63,6 +85,8 @@ server.use(cors());
 // });
 /********************end Points Routs****************************/
 server.use(express.json());
+ 
+ server.use('/api-docs', swaggerUi.serve , swaggerUi.setup(swaggerSpec));
  server.use(loginRoutes);
  server.use(authMW);
 server.use(teacherRoute);
