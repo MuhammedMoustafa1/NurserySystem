@@ -26,9 +26,6 @@ response.status(200).json({ message: "teacher created", token: token });
     })
     .catch(error => next(error));
     
-    
-
-
 }
 
 

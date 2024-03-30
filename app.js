@@ -36,7 +36,7 @@ const port = process.env.PORT || 8080;
 const server = express();
 
 mongoose
-        .connect("mongodb://127.0.0.1:27017/nurserySystem")
+        .connect(process.env.DBURL)
         .then( () => {
             console.log("MongoDB is connected......");
             server.listen(port , ()=> {

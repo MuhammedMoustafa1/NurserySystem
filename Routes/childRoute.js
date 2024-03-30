@@ -2,12 +2,14 @@ const express = require('express');
 const childController = require('./../Controller/ChildController');
 const { insertValidator ,updateValidator , validateId} = require('./../MildWwares/Validation/childValidation');
 const validationResult = require('./../MildWwares/Validation/validationResult');
+const {isAdmin , isTeacher} = require('../MildWwares/authenticationMW')
 
 const router = express.Router();
 
 router
     .route('/child')
-    .get(childController.getAllChilderns)
+    .all(isAdmin)
+    .get(isTeacher,childController.getAllChilderns)
     .post(insertValidator, validationResult, childController.insertChild)
     .patch(updateValidator , validationResult , childController.updateChild)
     .delete(childController.deleteChild);
