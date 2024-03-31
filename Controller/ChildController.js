@@ -1,4 +1,5 @@
 const childSchema = require("../Model/childModel");
+const classSchema  = require("../Model/classModel")
 
 exports.getAllChilderns = (request , response , next)=>{
     //response.status(200).json({ data: [] });
@@ -57,12 +58,36 @@ exports.updateChild = (request , response , next)=>{
     .catch((error) => next(error));
 };
 
-exports.deleteChild = (request , response , next)=>{
-    // response.status(200).json({data : "Deleted Sussefully"});
-    childSchema
-    .findByIdAndDelete(request.params.id)
-    .then((data) => {
-        response.status(200).json({data})
-    })
-    .catch((error) => next(error));
-}
+// exports.deleteChild = (request , response , next)=>{
+//     // response.status(200).json({data : "Deleted Sussefully"});
+//     childSchema
+//     .findByIdAndDelete(request.params.id)
+//     .then((data) => {
+//         response.status(200).json({data})
+//     })
+//     .catch((error) => next(error));
+// }
+
+
+exports.deleteChild = async(req, res, next) => {
+    try {
+        const id = req.params.id;
+        const classOfChild = await classSchema.findOne({ children: id });
+        if (classOfChild) {
+            classOfChild.children.pull(id);
+            await classOfChild.save();
+        }
+        childSchema.findByIdAndDelete(id)
+            .then((data) => {
+                if (!data) {
+                    res.status(404).json({ message: "Child not found" });
+                }
+                res.status(200).json({ data: "deleted" });
+            })
+            
+    } catch (error) {
+        next(error);
+    }
+    
+
+};
