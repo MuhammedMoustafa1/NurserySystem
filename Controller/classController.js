@@ -29,8 +29,7 @@ exports.getClassById = (request , response , next)=>{
 };
 
 exports.insertClass = (request , response , next)=>{
-    // console.log(request.body);
-    // response.status(200).json({data : "Added Sussefully"});
+    
     let object = new classSchema(request.body);
     object
         .save()
