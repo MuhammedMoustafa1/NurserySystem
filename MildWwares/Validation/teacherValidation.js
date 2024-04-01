@@ -38,10 +38,10 @@ exports.updateValidator = [
     .isAlpha()
     .optional()
     .withMessage("fullName must be an String"),
-    // body("password")
-    // .isLength({min : 8 , max : 20})
-    // .optional()
-    // .withMessage("password must be between 8 and 20 characters and contain at least one lowercase character, one uppercase character, one number, and one special character"),
+    body("password")
+    .isLength({min : 8 , max : 20})
+    .optional()
+    .withMessage("password must be between 8 and 20 characters and contain at least one lowercase character, one uppercase character, one number, and one special character"),
     body("email")
     .isEmail()
     .optional()
