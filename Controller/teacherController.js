@@ -14,7 +14,7 @@ exports.getAllTeachers = (request , response , next)=>{
 }; 
 
 exports.getTeacherById = (request , response , next)=>{
-    // response.status(200).json({ data: request.params });
+    
 
     teacherSchema
     .findById(request.params.id)
