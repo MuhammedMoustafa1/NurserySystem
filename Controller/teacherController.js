@@ -82,20 +82,7 @@ exports.changeTeacherPassword = async (request, response, next) => {
 };
 
 
-// exports.changeUserPassword = (req, res, next) => {
-//   const id = req.body.id;
-//   const hash = bcrypt.hashSync(req.body.password, 10);
-//   teacher.updateOne({ _id: id }, { password: hash })
-//     .then((data) => {
-//       if (data.matchedCount === 0) {
-//         let error = new Error("this teacher id doesn't exist");
-//         error.statusCode = 404;
-//         throw error;
-//       }
-//       res.status(200).json({ message: "password updated successfully" });
-//     })
-//     .catch((error) => next(error));
-// }
+
 
 exports.getAllSupervesions = (request , response , next)=>{
     // response.status(200).json({ data: [] }); 
@@ -112,15 +99,7 @@ exports.getAllSupervesions = (request , response , next)=>{
     .catch((error) => next(error));
 }
 
-// exports.deleteTeacher = (request , response , next)=>{
-//     // response.status(200).json({data : "Deleted Sussefully"});
-//     teacherSchema
-//     .findByIdAndDelete(request.params.id)
-//     .then((data) => {
-//         response.status(200).json( "Deleted Sussefully");
-//     })
-//     .catch((error) => next(error));
-// }
+
 
 exports.deleteTeacher = async (req, res, next) => {
     const id = req.params.id;

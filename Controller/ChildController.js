@@ -58,15 +58,7 @@ exports.updateChild = (request , response , next)=>{
     .catch((error) => next(error));
 };
 
-// exports.deleteChild = (request , response , next)=>{
-//     // response.status(200).json({data : "Deleted Sussefully"});
-//     childSchema
-//     .findByIdAndDelete(request.params.id)
-//     .then((data) => {
-//         response.status(200).json({data})
-//     })
-//     .catch((error) => next(error));
-// }
+
 
 
 exports.deleteChild = async(req, res, next) => {
