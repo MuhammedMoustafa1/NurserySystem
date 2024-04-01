@@ -28,9 +28,7 @@ exports.getTeacherById = (request , response , next)=>{
 
 exports.insertTeacher = (request , response , next)=>{
 
-    //response.json({body: request.body , file:request.file});
-     //console.log(request.body);
-    // response.status(200).json({data : "Added Sussefully"});
+    
     let object = new teacherSchema({
         _id : request.body._id,
         fullName : request.body.fullName,
